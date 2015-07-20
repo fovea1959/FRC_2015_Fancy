@@ -34,7 +34,7 @@ public class  SpikeTimerCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println ("SpikeTimerCommand initialize");
+    	Robot.commandInitialized(this);
     	timer.reset();
     	timer.start();
     	Robot.relaySubsystem.relayForward();
@@ -47,13 +47,14 @@ public class  SpikeTimerCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double t = timer.get();
-    	System.out.println (t);
+    	System.out.println ("SpikeCommand timer = " + t);
     	if (t > 2.5) return true;
         return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.commandEnded(this);
     	System.out.println ("SpikeTimerCommand end");
     	Robot.relaySubsystem.relayOff();
     }
@@ -61,6 +62,7 @@ public class  SpikeTimerCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.commandInitialized(this);
     	end();
     }
 }
